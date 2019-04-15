@@ -6,3 +6,4 @@ public class Constants {
     public static final String CREATE_EMPLOYEE_FRAGMENT_TAG = "Create Employee Fragment";
     public static final String CREATE_CUSTOMER_FRAGMENT_TAG = "Create Customer Fragment";
 }
+
