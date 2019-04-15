@@ -7,7 +7,6 @@
     tools:context=".SignUpChoiceFragment"
     android:padding="10dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/sign_up_choice_text"
         android:layout_width="match_parent"
