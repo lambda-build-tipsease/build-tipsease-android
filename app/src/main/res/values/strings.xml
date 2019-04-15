@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Tipsease</string>
+    <string name="forget_user_login_info">Forget Username/Password?</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Username</string>
+    <string name="customer_check_box_text">Customer</string>
+    <string name="employee_check_box_text">Employee</string>
+    <string name="sign_up_text">Sign up</string>
+    <string name="select_account_type_text">Please select an account type</string>
+    <string name="create_customer_account_button_text">Create Customer Account</string>
+    <string name="create_employee_account_button_text">Create Employee Account</string>
+    <string name="employee_form_desc">Please fill out the following form to begin collecting your tips!</string>
+    <string name="customer_form_desc">Please fill out the following form to begin tipping!</string>
+    <string name="form_first_name_hint">First Name</string>
+    <string name="form_last_name_hint">Last Name</string>
+    <string name="form_email_hint">Email</string>
+    <string name="form_username_hint">Username</string>
+    <string name="form_password_hint">Password</string>
+    <string name="form_retype_password_hint">Retype Password</string>
+    <string name="sign_up_button_text">Sign Up</string>
+
+</resources>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CreateEmployeeAccountFragment"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/employee_form_desc_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/employee_form_desc"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"/>
+    
+    <EditText
+        android:id="@+id/employee_first_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/employee_form_desc_view"
+        android:hint="@string/form_first_name_hint"
+        android:maxLines="1"/>
+    
+    <EditText
+        android:id="@+id/employee_last_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/employee_first_name_edit_text"
+        android:hint="@string/form_last_name_hint"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/employee_email_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/form_email_hint"
+        app:layout_constraintTop_toBottomOf="@id/employee_last_name_edit_text"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/employee_username_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/form_username_hint"
+        app:layout_constraintTop_toBottomOf="@id/employee_email_edit_text"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/employee_password_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/form_password_hint"
+        app:layout_constraintTop_toBottomOf="@id/employee_username_edit_text"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/employee_retype_password_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/form_retype_password_hint"
+        app:layout_constraintTop_toBottomOf="@id/employee_password_edit_text"
+        android:maxLines="1"/>
+
+    <Button
+        android:id="@+id/employee_create_account_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_employee_account_button_text"
+        app:layout_constraintTop_toBottomOf="@id/employee_retype_password_edit_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>
