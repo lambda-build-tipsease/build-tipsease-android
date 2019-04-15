@@ -10,18 +10,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
-    private AppCompatCheckBox customerCheckBox;
-    private AppCompatCheckBox employeeCheckBox;
+    private RadioGroup loginRadioGroup;
+    private RadioButton customerLoginRadioButton;
+    private RadioButton employeeLoginRadioButton;
     private Button loginButton;
     private TextView forgetLoginInfoView;
     private TextView signUpView;
 
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,9 @@ public class LoginActivity extends AppCompatActivity {
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
-        customerCheckBox = findViewById(R.id.customer_check_box);
-        employeeCheckBox = findViewById(R.id.employee_check_box);
+        loginRadioGroup = findViewById(R.id.login_radio_group);
+        customerLoginRadioButton = findViewById(R.id.customer_login_radio_button);
+        employeeLoginRadioButton = findViewById(R.id.employee_login_radio_button);
         loginButton = findViewById(R.id.login_button);
         forgetLoginInfoView = findViewById(R.id.forget_login_info_view);
         signUpView = findViewById(R.id.sign_up_view);
@@ -49,6 +54,29 @@ public class LoginActivity extends AppCompatActivity {
                 fragmentTransaction.addToBackStack(null);
                 SignUpChoiceFragment fragment = SignUpChoiceFragment.newInstance();
                 fragment.show(fragmentTransaction, Constants.SIGN_UP_CHOICE_FRAGMENT_TAG);
+            }
+        });
+
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String username = usernameEditText.getText().toString();
+                final String password = passwordEditText.getText().toString();
+                final String type;
+                if (loginRadioGroup.getCheckedRadioButtonId() == R.id.customer_login_radio_button) {
+                    type = "users";
+                } else if (loginRadioGroup.getCheckedRadioButtonId() == R.id.employee_login_radio_button) {
+                    type = "serviceWorkers";
+                } else {
+                    type = "";
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        token = UserDAO.authenticateLogin(username, password, type);
+                    }
+                }).start();
             }
         });
     }

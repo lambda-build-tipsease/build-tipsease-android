@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -30,7 +31,7 @@ public class NetworkAdapter {
         return httpRequest(urlString, requestMethod, null, null);
     }
 
-    static String httpRequest(String urlString, String requestMethod, JSONObject requestBody, Map<String, String> headerProperties) {
+    static String httpRequest(String urlString, String requestMethod, JSONObject requestBody, HashMap<String, String> headerProperties) {
         String             result      = "";
         InputStream inputStream = null;
         HttpsURLConnection connection  = null;

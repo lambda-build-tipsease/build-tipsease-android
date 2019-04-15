@@ -41,21 +41,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/customer_check_box"
+            <RadioGroup
+                android:id="@+id/login_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/customer_login_radio_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/customer_check_box_text"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
+              />
 
-            <android.support.v7.widget.AppCompatCheckBox
-                android:id="@+id/employee_check_box"
+            <RadioButton
+                android:id="@+id/employee_login_radio_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/employee_check_box_text"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/customer_check_box"/>
+                android:text="@string/employee_check_box_text" />
+
+        </RadioGroup>
 
             <TextView
                 android:id="@+id/forget_login_info_view"
@@ -63,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/forget_user_login_info"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/customer_check_box"
+                app:layout_constraintTop_toBottomOf="@id/login_radio_group"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
             <TextView
