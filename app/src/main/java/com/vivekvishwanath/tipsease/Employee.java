@@ -2,14 +2,17 @@ package com.vivekvishwanath.tipsease;
 
 public class Employee {
 
-    private String firstName, lastName, bio, workplace
-            , username, email, imageUrl;
+    private String firstName, lastName, bio, tagline, workplace, serviceType
+            , username, email, imageUrl, timeAtJob;
+    private int id;
+    private float accountBalance, rating;
 
     public Employee() {
 
     }
 
-    public Employee(String firstName, String lastName, String bio, String workplace, String username, String email, String imageUrl) {
+    public Employee(String firstName, String lastName, String bio, String workplace, String username, String email, String imageUrl,
+                    String tagline, String serviceType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
@@ -17,6 +20,8 @@ public class Employee {
         this.username = username;
         this.email = email;
         this.imageUrl = imageUrl;
+        this.tagline = tagline;
+        this.serviceType = serviceType;
     }
 
     public String getFirstName() {
@@ -73,5 +78,53 @@ public class Employee {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public String getTimeAtJob() {
+        return timeAtJob;
+    }
+
+    public void setTimeAtJob(String timeAtJob) {
+        this.timeAtJob = timeAtJob;
+    }
+
+    public float getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(float accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

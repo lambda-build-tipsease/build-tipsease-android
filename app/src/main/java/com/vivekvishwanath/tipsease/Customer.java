@@ -3,6 +3,7 @@ package com.vivekvishwanath.tipsease;
 public class Customer {
 
     private String firstName, lastName, email, username;
+    private int id;
 
     public Customer(String firstName, String lastName, String email, String username) {
         this.firstName = firstName;
@@ -45,5 +46,13 @@ public class Customer {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
