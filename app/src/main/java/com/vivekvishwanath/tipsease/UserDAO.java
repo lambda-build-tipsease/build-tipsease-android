@@ -75,4 +75,26 @@ public class UserDAO {
         NetworkAdapter.httpRequest(BASE_URL + REGISTER_EMPLOYEE_URL, NetworkAdapter.POST,
                 newEmployeeJSON, headerProperties);
     }
+
+    public static void registerCustomer(Customer customer) {
+        JSONObject newCustomerJSON = new JSONObject();
+        try {
+            newCustomerJSON.put("username", customer.getUsername());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            newCustomerJSON.put("fullName", customer.getFirstName() + " " + customer.getLastName());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            newCustomerJSON.put("password", customer.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        NetworkAdapter.httpRequest(BASE_URL + REGISTER_CUSTOMER_URL, NetworkAdapter.POST, newCustomerJSON, headerProperties);
+    }
 }

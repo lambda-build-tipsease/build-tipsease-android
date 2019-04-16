@@ -3,20 +3,25 @@ package com.vivekvishwanath.tipsease;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class CreateCustomerAccountFragment extends DialogFragment {
-    // TODO: Rename parameter arguments, choose names that match
 
-
-
-    private OnFragmentInteractionListener mListener;
+    private EditText customerFirstName;
+    private EditText customerLastName;
+    private EditText customerUsername;
+    private EditText customerPassword;
+    private EditText customerRetypePassword;
+    private Button createCustomerAccountButton;
 
     public CreateCustomerAccountFragment() {
         // Required empty public constructor
@@ -35,26 +40,35 @@ public class CreateCustomerAccountFragment extends DialogFragment {
         return inflater.inflate(R.layout.fragment_create_customer_account, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        customerFirstName = view.findViewById(R.id.customer_first_name_edit_text);
+        customerLastName = view.findViewById(R.id.customer_last_name_edit_text);
+        customerUsername = view.findViewById(R.id.customer_username_edit_text);
+        customerPassword = view.findViewById(R.id.customer_password_edit_text);
+        customerRetypePassword = view.findViewById(R.id.customer_retype_password_edit_text);
+        createCustomerAccountButton = view.findViewById(R.id.customer_create_account_button);
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        createCustomerAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Customer customer = new Customer();
+                customer.setFirstName(customerFirstName.getText().toString());
+                customer.setLastName(customerLastName.getText().toString());
+                customer.setUsername(customerUsername.getText().toString());
+                if (customerPassword.getText().toString().equals(customerRetypePassword.getText().toString())) {
+                    customer.setPassword(customerPassword.getText().toString());
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UserDAO.registerCustomer(customer);
+                    }
+                }).start();
+            }
+        });
+
     }
 }
