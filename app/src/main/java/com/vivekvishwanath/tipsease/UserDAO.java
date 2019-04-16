@@ -1,5 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,7 +107,7 @@ public class UserDAO {
         ArrayList<Employee> employees = new ArrayList<>();
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        headerProperties.put("authorization", Constants.TEMP_TOKEN);
+        headerProperties.put("authorization", LoginActivity.prefs.getString("token", null));
         try {
             JSONArray employeesJSONArray = new JSONArray(NetworkAdapter.httpRequest(BASE_URL + GET_ALL_EMPLOYEES_URL,
                     NetworkAdapter.GET, null, headerProperties));
@@ -191,20 +193,19 @@ public class UserDAO {
     public static boolean isTokenExpired(String token) {
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        headerProperties.put("authorization", Constants.TEMP_TOKEN);
-        String result = NetworkAdapter.httpRequest(BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, 1),
+        headerProperties.put("authorization", LoginActivity.prefs.getString("token", null));
+        int responseCode = NetworkAdapter.getResponseCode(BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, 1),
                 NetworkAdapter.GET, null, headerProperties);
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            if (jsonObject.getString("you").equals("session timed out!")) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (responseCode == 200) {
+            return false;
+        } else {
+            return true;
         }
-        return false;
+    }
+
+    public static Bitmap getEmployeeImage(String url) {
+        Bitmap image = NetworkAdapter.getBitmapFromUrl(url);
+        return image;
     }
 
 

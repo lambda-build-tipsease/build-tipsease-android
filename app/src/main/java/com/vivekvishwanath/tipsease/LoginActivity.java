@@ -2,6 +2,7 @@ package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -29,12 +30,16 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetLoginInfoView;
     private TextView signUpView;
     private Context context;
+    static SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = this;
+
+        prefs = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -87,8 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Constants.TEMP_TOKEN = UserDAO.authenticateLogin(username, password, type);
-                            if (Constants.TEMP_TOKEN != null) {
+                            editor.putString("token", UserDAO.authenticateLogin(username, password, type));
+                            editor.commit();
+                            boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString("token", null));
+                            if (!isTokenExpired) {
                                 final Intent intent = new Intent(context, CustomerMainActivity.class);
                                 runOnUiThread(new Runnable() {
                                     @Override

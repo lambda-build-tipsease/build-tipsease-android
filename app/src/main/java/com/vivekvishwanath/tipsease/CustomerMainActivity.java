@@ -1,6 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
@@ -21,7 +23,9 @@ public class CustomerMainActivity extends AppCompatActivity {
     private EmployeeListAdapter employeeListAdapter;
 
     private ArrayList<Employee> matchedEmployees = new ArrayList<>();
+    public static HashMap<Integer, Bitmap> employeeImages = new HashMap<>();
     private ArrayList<Employee> allEmployees;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +62,27 @@ public class CustomerMainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 matchedEmployees.clear();
+                employeeImages.clear();
                 employeeListAdapter.notifyDataSetChanged();
-                String entry = s.toString();
                 if (!s.toString().equals("")) {
                     for (int i = 0; i < allEmployees.size(); i++) {
                         if (allEmployees.get(i).getFirstName().startsWith(s.toString()) ||
                                 allEmployees.get(i).getLastName().startsWith(s.toString())) {
                             matchedEmployees.add(allEmployees.get(i));
-                            employeeListAdapter.notifyDataSetChanged();
+                            final int id = allEmployees.get(i).getId();
+                            final String imageUrl = allEmployees.get(i).getImageUrl();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    employeeImages.put(id, UserDAO.getEmployeeImage(imageUrl));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            employeeListAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                }
+                            }).start();
                         }
                     }
                 }

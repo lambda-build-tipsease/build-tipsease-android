@@ -36,6 +36,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         holder.employeeLastName.setText(employee.getLastName());
         holder.employeeWorkplace.setText(employee.getWorkplace());
         holder.employeeOccupation.setText(employee.getServiceType());
+        holder.employeeImageView.setImageBitmap(CustomerMainActivity.employeeImages.get(employee.getId()));
     }
 
     @Override

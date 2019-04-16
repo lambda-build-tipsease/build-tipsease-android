@@ -78,6 +78,8 @@ public class NetworkAdapter {
                     } while (line != null);
                     result = builder.toString();
                 }
+            } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
+                return Integer.toString(HttpsURLConnection.HTTP_UNAUTHORIZED);
             }
 
         } catch (MalformedURLException e) {
@@ -139,4 +141,45 @@ public class NetworkAdapter {
         }
         return result;
     }
+
+    public static int getResponseCode(String urlString, String requestMethod, JSONObject requestBody, HashMap<String, String> headerProperties) {
+        String             result      = "";
+        InputStream inputStream = null;
+        HttpsURLConnection connection  = null;
+
+        try {
+            URL url = new URL(urlString);
+            connection = (HttpsURLConnection) url.openConnection();
+
+            connection.setRequestMethod(requestMethod);
+
+            if (headerProperties != null) {
+                for (Map.Entry<String, String> property : headerProperties.entrySet()) {
+                    connection.setRequestProperty(property.getKey(), property.getValue());
+                }
+            }
+
+            final int responseCode = connection.getResponseCode();
+            return responseCode;
+        }  catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return 0;
+    }
+
+
 }
