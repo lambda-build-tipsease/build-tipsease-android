@@ -1,5 +1,8 @@
 package com.vivekvishwanath.tipsease;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +17,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
@@ -24,13 +29,17 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView forgetLoginInfoView;
     private TextView signUpView;
-
-    private String token;
+    private Context context;
+    static SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context = this;
+
+        prefs = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -41,8 +50,22 @@ public class LoginActivity extends AppCompatActivity {
         forgetLoginInfoView = findViewById(R.id.forget_login_info_view);
         signUpView = findViewById(R.id.sign_up_view);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isTokenExpired = UserDAO.isTokenExpired(Constants.TEMP_TOKEN);
+                if (!isTokenExpired) {
+                    final Intent intent = new Intent(context, CustomerMainActivity.class);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+        }).start();
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
 
         signUpView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,17 +89,30 @@ public class LoginActivity extends AppCompatActivity {
                 final String type;
                 if (loginRadioGroup.getCheckedRadioButtonId() == R.id.customer_login_radio_button) {
                     type = "users";
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            editor.putString("token", UserDAO.authenticateLogin(username, password, type));
+                            editor.commit();
+                            boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString("token", null));
+                            if (!isTokenExpired) {
+                                final Intent intent = new Intent(context, CustomerMainActivity.class);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
                 } else if (loginRadioGroup.getCheckedRadioButtonId() == R.id.employee_login_radio_button) {
                     type = "serviceWorkers";
                 } else {
                     type = "";
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        token = UserDAO.authenticateLogin(username, password, type);
-                    }
-                }).start();
+
+
             }
         });
     }

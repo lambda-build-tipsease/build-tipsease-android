@@ -2,7 +2,7 @@ package com.vivekvishwanath.tipsease;
 
 public class Customer {
 
-    private String firstName, lastName, email, username;
+    private String firstName, lastName, email, username, password;
     private int id;
 
     public Customer(String firstName, String lastName, String email, String username) {
@@ -54,5 +54,13 @@ public class Customer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -32,20 +32,13 @@
         android:hint="Last Name"
         android:maxLines="1"/>
 
-    <EditText
-        android:id="@+id/customer_email_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        app:layout_constraintTop_toBottomOf="@id/customer_last_name_edit_text"
-        android:maxLines="1"/>
 
     <EditText
         android:id="@+id/customer_username_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
-        app:layout_constraintTop_toBottomOf="@id/customer_email_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/customer_last_name_edit_text"
         android:maxLines="1"/>
 
     <EditText
