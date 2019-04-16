@@ -1,6 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,12 +27,21 @@ public class CustomerMainActivity extends AppCompatActivity {
     public static HashMap<Integer, Bitmap> employeeImages = new HashMap<>();
     private ArrayList<Employee> allEmployees;
 
+    private String token;
+    private int id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
         context = this;
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        token = extras.getString("token");
+        id = extras.getInt("id");
+        
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
@@ -44,7 +54,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                allEmployees = UserDAO.getAllEmployees();
+                allEmployees = UserDAO.getAllEmployees(token);
             }
         }).start();
 

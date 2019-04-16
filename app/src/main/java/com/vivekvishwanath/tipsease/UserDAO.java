@@ -22,7 +22,7 @@ public class UserDAO {
 
     private static HashMap<String, String> headerProperties;
 
-    public static String authenticateLogin(String username, String password, String type) {
+    public static JSONObject authenticateLogin(String username, String password, String type) {
         String url = BASE_URL + LOGIN_URL;
         JSONObject loginJSON = new JSONObject();
         try {
@@ -46,7 +46,7 @@ public class UserDAO {
         String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, loginJSON, headerProperties);
             try {
             JSONObject resultJSON = new JSONObject(result);
-            return resultJSON.getString("token");
+            return resultJSON;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -103,11 +103,11 @@ public class UserDAO {
         NetworkAdapter.httpRequest(BASE_URL + REGISTER_CUSTOMER_URL, NetworkAdapter.POST, newCustomerJSON, headerProperties);
     }
 
-    public static ArrayList<Employee> getAllEmployees() {
+    public static ArrayList<Employee> getAllEmployees(String token) {
         ArrayList<Employee> employees = new ArrayList<>();
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        headerProperties.put("authorization", LoginActivity.prefs.getString("token", null));
+        headerProperties.put("authorization", token);
         try {
             JSONArray employeesJSONArray = new JSONArray(NetworkAdapter.httpRequest(BASE_URL + GET_ALL_EMPLOYEES_URL,
                     NetworkAdapter.GET, null, headerProperties));
@@ -193,7 +193,7 @@ public class UserDAO {
     public static boolean isTokenExpired(String token) {
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        headerProperties.put("authorization", LoginActivity.prefs.getString("token", null));
+        headerProperties.put("authorization", token);
         int responseCode = NetworkAdapter.getResponseCode(BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, 1),
                 NetworkAdapter.GET, null, headerProperties);
         if (responseCode == 200) {

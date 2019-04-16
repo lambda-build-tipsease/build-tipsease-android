@@ -17,6 +17,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetLoginInfoView;
     private TextView signUpView;
     private Context context;
-    static SharedPreferences prefs;
+    private static SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         context = this;
 
         prefs = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = prefs.edit();
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -53,15 +55,20 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean isTokenExpired = UserDAO.isTokenExpired(Constants.TEMP_TOKEN);
+                boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString("token", null));
                 if (!isTokenExpired) {
-                    final Intent intent = new Intent(context, CustomerMainActivity.class);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(intent);
-                        }
-                    });
+                    if (prefs.getString("type", null).equals("users")) {
+                        final Intent intent = new Intent(context, CustomerMainActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putString("token", prefs.getString("token", null));
+                        extras.putString("id", prefs.getString("id", null));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(intent);
+                            }
+                        });
+                    }
                 }
             }
         }).start();
@@ -89,31 +96,46 @@ public class LoginActivity extends AppCompatActivity {
                 final String type;
                 if (loginRadioGroup.getCheckedRadioButtonId() == R.id.customer_login_radio_button) {
                     type = "users";
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            editor.putString("token", UserDAO.authenticateLogin(username, password, type));
-                            editor.commit();
-                            boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString("token", null));
-                            if (!isTokenExpired) {
-                                final Intent intent = new Intent(context, CustomerMainActivity.class);
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startActivity(intent);
-                                    }
-                                });
-                            }
-                        }
-                    }).start();
+                    authenticateLoginAttempt(username, password, type);
                 } else if (loginRadioGroup.getCheckedRadioButtonId() == R.id.employee_login_radio_button) {
                     type = "serviceWorkers";
+                    authenticateLoginAttempt(username, password, type);
                 } else {
                     type = "";
                 }
-
-
             }
         });
+    }
+
+    public void authenticateLoginAttempt(final String username, final String password, final String type) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject loginJSON = UserDAO.authenticateLogin(username, password, type);
+                if (loginJSON != null) {
+                    try {
+                        String token = loginJSON.getString("token");
+                        int id = loginJSON.getJSONObject("userInfo").getInt("id");
+                        boolean isTokenExpired = UserDAO.isTokenExpired(token);
+                        if (!isTokenExpired) {
+                            SharedPreferences.Editor editor = prefs.edit();
+                            editor.putString("token", token);
+                            editor.putInt("id", id);
+                            editor.putString("type", type);
+                            editor.commit();
+                            final Intent intent = new Intent(context, CustomerMainActivity.class);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }
