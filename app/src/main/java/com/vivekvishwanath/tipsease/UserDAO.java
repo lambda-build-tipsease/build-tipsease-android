@@ -1,13 +1,15 @@
 package com.vivekvishwanath.tipsease;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserDAO {
     private static final String BASE_URL = "https://buildtipease.herokuapp.com";
-    private static final String GET_ALL_WORKERS_URL = "/serviceWorkers";
+    private static final String GET_ALL_EMPLOYEES_URL = "/serviceWorkers";
     private static final String REGISTER_CUSTOMER_URL = "/auth/users/register";
     private static final String REGISTER_EMPLOYEE_URL = "/auth/serviceWorkers/register";
     private static final String LOGIN_URL = "/auth/users/login";
@@ -97,4 +99,93 @@ public class UserDAO {
         headerProperties.put("Content-Type", "application/json");
         NetworkAdapter.httpRequest(BASE_URL + REGISTER_CUSTOMER_URL, NetworkAdapter.POST, newCustomerJSON, headerProperties);
     }
+
+    public static ArrayList<Employee> getAllEmployees() {
+        ArrayList<Employee> employees = new ArrayList<>();
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", Constants.TEMP_TOKEN);
+        try {
+            JSONArray employeesJSONArray = new JSONArray(NetworkAdapter.httpRequest(BASE_URL + GET_ALL_EMPLOYEES_URL,
+                    NetworkAdapter.GET, null, headerProperties));
+            for (int i = 0; i < employeesJSONArray.length(); i++) {
+                JSONObject employeeJSON = employeesJSONArray.getJSONObject(i);
+                employees.add(getEmployeeFromJson(employeeJSON));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return employees;
+    }
+
+    public static Employee getEmployeeFromJson(JSONObject jsonObject) {
+        Employee employee = new Employee();
+        try {
+            String[] fullName = jsonObject.getString("fullName").split(" ");
+            String firstName = fullName[0];
+            employee.setFirstName(firstName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            String[] fullName = jsonObject.getString("fullName").split(" ");
+            String lastName = fullName[1];
+            employee.setLastName(lastName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setId(jsonObject.getInt("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setImageUrl(jsonObject.getString("photoUrl"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setServiceType(jsonObject.getString("serviceType"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setTimeAtJob(jsonObject.getString("timeAtJob"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setTagline(jsonObject.getString("tagline"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setBio(jsonObject.getString("bio"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setWorkplace(jsonObject.getString("workplace"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setAccountBalance(jsonObject.getDouble("accountBalance"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setRating(jsonObject.getDouble("rating"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setNumOfRatings(jsonObject.getInt("numOfRatings"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return employee;
+    }
+
+
 }

@@ -4,8 +4,8 @@ public class Employee {
 
     private String firstName, lastName, bio, tagline, workplace, serviceType
             , username, password, email, imageUrl, timeAtJob;
-    private int id;
-    private float accountBalance, rating;
+    private int id, numOfRatings;
+    private double accountBalance, rating;
 
     public Employee() {
 
@@ -104,19 +104,19 @@ public class Employee {
         this.timeAtJob = timeAtJob;
     }
 
-    public float getAccountBalance() {
+    public double getAccountBalance() {
         return accountBalance;
     }
 
-    public void setAccountBalance(float accountBalance) {
+    public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
 
-    public float getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -134,5 +134,13 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getNumOfRatings() {
+        return numOfRatings;
+    }
+
+    public void setNumOfRatings(int numOfRatings) {
+        this.numOfRatings = numOfRatings;
     }
 }
