@@ -3,7 +3,7 @@ package com.vivekvishwanath.tipsease;
 public class Employee {
 
     private String firstName, lastName, bio, tagline, workplace, serviceType
-            , username, email, imageUrl, timeAtJob;
+            , username, password, email, imageUrl, timeAtJob;
     private int id;
     private float accountBalance, rating;
 
@@ -126,5 +126,13 @@ public class Employee {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -3,10 +3,7 @@ package com.vivekvishwanath.tipsease;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class UserDAO {
     private static final String BASE_URL = "https://buildtipease.herokuapp.com";
@@ -17,11 +14,8 @@ public class UserDAO {
     private static final String GET_SPECIFIC_CUSTOMER_URL = "/users/${" + "%d" + "}";
     private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/${" + "%d" + "}";
     private static final String RATE_WORKER_URL = "/serviceWorkers/rate/${" + "%d" + "}";
-    HashMap<String, String> headerProperties = new HashMap<>();
 
-    //   "username": "swUsername1",
-    //        "fullName": "Bleh Bluh",
-    //        "password": "$2b$08$3DGr0lGSiZMtAtVBlPgg6.rTK/tVjdsGlaI6jDdumGsOB5e./Tpz2",
+    private static HashMap<String, String> headerProperties;
 
     public static String authenticateLogin(String username, String password, String type) {
         String url = BASE_URL + LOGIN_URL;
@@ -42,7 +36,7 @@ public class UserDAO {
             e.printStackTrace();
         }
 
-        HashMap<String, String> headerProperties = new HashMap<>();
+        headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
         String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, loginJSON, headerProperties);
             try {
@@ -52,5 +46,33 @@ public class UserDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void registerEmployee(Employee employee) {
+        JSONObject newEmployeeJSON = new JSONObject();
+        try {
+            newEmployeeJSON.put("username", employee.getUsername());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            newEmployeeJSON.put("fullName", employee.getFirstName() + " " + employee.getLastName());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            newEmployeeJSON.put("password", employee.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            newEmployeeJSON.put("serviceType", employee.getServiceType());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        NetworkAdapter.httpRequest(BASE_URL + REGISTER_EMPLOYEE_URL, NetworkAdapter.POST,
+                newEmployeeJSON, headerProperties);
     }
 }
