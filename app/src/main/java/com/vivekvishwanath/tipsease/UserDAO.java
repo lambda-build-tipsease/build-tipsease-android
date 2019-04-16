@@ -13,9 +13,10 @@ public class UserDAO {
     private static final String REGISTER_CUSTOMER_URL = "/auth/users/register";
     private static final String REGISTER_EMPLOYEE_URL = "/auth/serviceWorkers/register";
     private static final String LOGIN_URL = "/auth/users/login";
-    private static final String GET_SPECIFIC_CUSTOMER_URL = "/users/${" + "%d" + "}";
-    private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/${" + "%d" + "}";
-    private static final String RATE_WORKER_URL = "/serviceWorkers/rate/${" + "%d" + "}";
+    private static final String GET_SPECIFIC_CUSTOMER_URL = "/users/" + "%d";
+    private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/" + "%d";
+    private static final String RATE_WORKER_URL = "/serviceWorkers/rate/" + "%d";
+
 
     private static HashMap<String, String> headerProperties;
 
@@ -185,6 +186,25 @@ public class UserDAO {
             e.printStackTrace();
         }
         return employee;
+    }
+
+    public static boolean isTokenExpired(String token) {
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", Constants.TEMP_TOKEN);
+        String result = NetworkAdapter.httpRequest(BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, 1),
+                NetworkAdapter.GET, null, headerProperties);
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getString("you").equals("session timed out!")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

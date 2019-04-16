@@ -1,5 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,20 +28,13 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView forgetLoginInfoView;
     private TextView signUpView;
-
-    private String token;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ArrayList<Employee> employees = UserDAO.getAllEmployees();
-                int i = 0;
-            }
-        }).start();
+        context = this;
 
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
@@ -50,8 +45,22 @@ public class LoginActivity extends AppCompatActivity {
         forgetLoginInfoView = findViewById(R.id.forget_login_info_view);
         signUpView = findViewById(R.id.sign_up_view);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isTokenExpired = UserDAO.isTokenExpired(Constants.TEMP_TOKEN);
+                if (!isTokenExpired) {
+                    final Intent intent = new Intent(context, CustomerMainActivity.class);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+        }).start();
         final FragmentManager fragmentManager = getSupportFragmentManager();
-
 
         signUpView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,17 +84,28 @@ public class LoginActivity extends AppCompatActivity {
                 final String type;
                 if (loginRadioGroup.getCheckedRadioButtonId() == R.id.customer_login_radio_button) {
                     type = "users";
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Constants.TEMP_TOKEN = UserDAO.authenticateLogin(username, password, type);
+                            if (Constants.TEMP_TOKEN != null) {
+                                final Intent intent = new Intent(context, CustomerMainActivity.class);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
                 } else if (loginRadioGroup.getCheckedRadioButtonId() == R.id.employee_login_radio_button) {
                     type = "serviceWorkers";
                 } else {
                     type = "";
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        token = UserDAO.authenticateLogin(username, password, type);
-                    }
-                }).start();
+
+
             }
         });
     }
