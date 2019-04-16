@@ -55,13 +55,14 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString("token", null));
-                if (!isTokenExpired) {
-                    if (prefs.getString("type", null).equals("users")) {
+                boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString(Constants.TOKEN_KEY, null));
+                if (!isTokenExpired && prefs.getInt(Constants.ID_KEY, 0) != 0) {
+                    if (prefs.getString(Constants.TYPE_KEY, null).equals("users")) {
                         final Intent intent = new Intent(context, CustomerMainActivity.class);
                         Bundle extras = new Bundle();
-                        extras.putString("token", prefs.getString("token", null));
-                        extras.putString("id", prefs.getString("id", null));
+                        extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
+                        extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
+                        intent.putExtras(extras);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -114,16 +115,20 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject loginJSON = UserDAO.authenticateLogin(username, password, type);
                 if (loginJSON != null) {
                     try {
-                        String token = loginJSON.getString("token");
-                        int id = loginJSON.getJSONObject("userInfo").getInt("id");
+                        String token = loginJSON.getString(Constants.TOKEN_KEY);
+                        int id = loginJSON.getJSONObject("userInfo").getInt(Constants.ID_KEY);
                         boolean isTokenExpired = UserDAO.isTokenExpired(token);
                         if (!isTokenExpired) {
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("token", token);
-                            editor.putInt("id", id);
-                            editor.putString("type", type);
+                            editor.putString(Constants.TOKEN_KEY, token);
+                            editor.putInt(Constants.ID_KEY, id);
+                            editor.putString(Constants.TYPE_KEY, type);
                             editor.commit();
                             final Intent intent = new Intent(context, CustomerMainActivity.class);
+                            Bundle extras = new Bundle();
+                            extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
+                            extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
+                            intent.putExtras(extras);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

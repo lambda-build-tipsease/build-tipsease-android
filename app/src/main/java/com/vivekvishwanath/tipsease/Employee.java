@@ -1,6 +1,8 @@
 package com.vivekvishwanath.tipsease;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable{
 
     private String firstName, lastName, bio, tagline, workplace, serviceType
             , username, password, email, imageUrl, timeAtJob;

@@ -1,6 +1,8 @@
 package com.vivekvishwanath.tipsease;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
 
     private String firstName, lastName, email, username, password;
     private int id;
