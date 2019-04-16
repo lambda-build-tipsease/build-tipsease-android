@@ -78,10 +78,7 @@ public class NetworkAdapter {
                     } while (line != null);
                     result = builder.toString();
                 }
-            } else if (responseCode == HttpsURLConnection.HTTP_UNAUTHORIZED) {
-                return Integer.toString(HttpsURLConnection.HTTP_UNAUTHORIZED);
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

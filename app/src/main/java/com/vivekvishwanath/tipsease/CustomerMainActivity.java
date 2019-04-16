@@ -1,6 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,12 +27,21 @@ public class CustomerMainActivity extends AppCompatActivity {
     public static HashMap<Integer, Bitmap> employeeImages = new HashMap<>();
     private ArrayList<Employee> allEmployees;
 
+    private String token = "";
+    private int id = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
         context = this;
+
+        Bundle extras = getIntent().getExtras();
+        int i = 0;
+        token = extras.getString(Constants.TOKEN_KEY);
+        id = extras.getInt(Constants.ID_KEY);
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
 
@@ -44,7 +54,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                allEmployees = UserDAO.getAllEmployees();
+                allEmployees = UserDAO.getAllEmployees(token);
             }
         }).start();
 
@@ -69,12 +79,12 @@ public class CustomerMainActivity extends AppCompatActivity {
                         if (allEmployees.get(i).getFirstName().startsWith(s.toString()) ||
                                 allEmployees.get(i).getLastName().startsWith(s.toString())) {
                             matchedEmployees.add(allEmployees.get(i));
-                            final int id = allEmployees.get(i).getId();
+                            final int employeeId = allEmployees.get(i).getId();
                             final String imageUrl = allEmployees.get(i).getImageUrl();
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    employeeImages.put(id, UserDAO.getEmployeeImage(imageUrl));
+                                    employeeImages.put(employeeId, UserDAO.getEmployeeImage(imageUrl));
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {

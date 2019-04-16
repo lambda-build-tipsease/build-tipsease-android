@@ -1,7 +1,14 @@
 package com.vivekvishwanath.tipsease;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,12 +38,26 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull EmployeeListAdapter.ViewHolder holder, int position) {
-        Employee employee = matchedEmployees.get(position);
+        final Employee employee = matchedEmployees.get(position);
         holder.employeeFirstName.setText(employee.getFirstName());
         holder.employeeLastName.setText(employee.getLastName());
         holder.employeeWorkplace.setText(employee.getWorkplace());
         holder.employeeOccupation.setText(employee.getServiceType());
         holder.employeeImageView.setImageBitmap(CustomerMainActivity.employeeImages.get(employee.getId()));
+
+        holder.searchedEmployeeCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.addToBackStack(null);
+                EmployeeDetailsFragment fragment = EmployeeDetailsFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("employee", employee);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.employee_details_fragment_container, fragment).commit();
+            }
+        });
     }
 
     @Override
