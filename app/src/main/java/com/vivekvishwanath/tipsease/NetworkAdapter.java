@@ -1,5 +1,8 @@
 package com.vivekvishwanath.tipsease;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -7,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -22,6 +26,7 @@ public class NetworkAdapter {
     public static final String PUT     = "PUT";
     public static final String DELETE  = "DELETE";
     public static final String TRACE   = "TRACE";
+    public static final int TIMEOUT = 10000;
 
     static String httpRequest(String urlString) {
         return httpRequest(urlString, GET, null, null);
@@ -90,6 +95,46 @@ public class NetworkAdapter {
 
             if (connection != null) {
                 connection.disconnect();
+            }
+        }
+        return result;
+    }
+
+    public static Bitmap getBitmapFromUrl(String stringUrl) {
+        Bitmap result = null;
+        InputStream stream = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(stringUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setReadTimeout(TIMEOUT);
+            connection.setConnectTimeout(TIMEOUT);
+
+            connection.connect();
+
+            if(connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                stream = connection.getInputStream();
+                if(stream != null) {
+                    result = BitmapFactory.decodeStream(stream);
+                }
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(connection != null) {
+                connection.disconnect();
+            }
+
+            if(stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return result;
