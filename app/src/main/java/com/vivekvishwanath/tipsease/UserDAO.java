@@ -136,6 +136,52 @@ public class UserDAO {
         return null;
     }
 
+    public static String updateEmployee(Employee employee, int id, String token) {
+        String url = BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, id);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("fullName", employee.getFirstName() + " " + employee.getLastName());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("photoUrl", employee.getImageUrl());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("serviceType", employee.getServiceType());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("timeAtJob", employee.getTimeAtJob());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("tagline", employee.getTagline());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("bio", employee.getBio());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            jsonObject.put("workplace", employee.getWorkplace());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, jsonObject, headerProperties);
+        return result;
+    }
+
     public static Employee getEmployeeFromJson(JSONObject jsonObject) {
         Employee employee = new Employee();
         try {

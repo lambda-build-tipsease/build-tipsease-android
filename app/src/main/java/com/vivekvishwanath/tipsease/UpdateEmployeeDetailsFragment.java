@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -26,6 +27,7 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
     private EditText updateEmployeeTime;
     private EditText updateEmployeeTagline;
     private EditText updateEmployeeBio;
+    private Button updateEmployeeButton;
 
     private String token;
     private int id;
@@ -86,6 +88,13 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
                 });
             }
         }).start();
+
+        updateEmployeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

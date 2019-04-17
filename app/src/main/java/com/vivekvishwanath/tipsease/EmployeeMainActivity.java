@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class EmployeeMainActivity extends AppCompatActivity {
 
+    private TextView employeeMainPageName;
     private Button editEmployeeDetailsButton;
     private Button viewTipHistoryButton;
     private Button viewProfileButton;
@@ -22,11 +24,24 @@ public class EmployeeMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_employee_main);
 
         Bundle extras = getIntent().getExtras();
-        int i = 0;
         token = extras.getString(Constants.TOKEN_KEY);
         id = extras.getInt(Constants.ID_KEY);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Employee employee = UserDAO.getSpecificEmployee(id, token);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        employeeMainPageName = findViewById(R.id.employee_main_page_name);
+                        employeeMainPageName.setText(employee.getFirstName() + " " + employee.getLastName());
+                    }
+                });
+            }
+        }).start();
 
         editEmployeeDetailsButton = findViewById(R.id.edit_employee_details_button);
         editEmployeeDetailsButton.setOnClickListener(new View.OnClickListener() {
