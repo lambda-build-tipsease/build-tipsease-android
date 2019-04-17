@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class UserDAO {
     private static final String GET_SPECIFIC_CUSTOMER_URL = "/users/" + "%d";
     private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/" + "%d";
     private static final String RATE_WORKER_URL = "/serviceWorkers/rate/" + "%d";
+    private static final String UPLOAD_IMAGE_URL = "https://api.imgbb.com/1/upload?key=";
 
 
     private static HashMap<String, String> headerProperties;
@@ -267,6 +269,25 @@ public class UserDAO {
     public static Bitmap getEmployeeImage(String url) {
         Bitmap image = NetworkAdapter.getBitmapFromUrl(url);
         return image;
+    }
+
+    public static String uploadImageForUrl(String base64, String pictureInfo) {
+        String url = UPLOAD_IMAGE_URL + Constants.IMAGE_HOSTING_KEY;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("image", base64);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, jsonObject, null);
+        try {
+            JSONObject resultJSON = new JSONObject(result);
+            String imageUrl = resultJSON.getJSONObject("data").getJSONObject("image").getString("url");
+            return imageUrl;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

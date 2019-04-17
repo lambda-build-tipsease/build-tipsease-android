@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         prefs = this.getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
 
+
         usernameEditText = findViewById(R.id.username_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
         loginRadioGroup = findViewById(R.id.login_radio_group);
