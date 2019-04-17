@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@color/cardview_light_background"
     tools:context=".EmployeeDetailsFragment">
 
     <ScrollView
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
-                android:stepSize="0.1"
+                android:stepSize="0.01"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_tagline"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
@@ -76,6 +77,16 @@
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_occupation"
                 />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Tip"
+                app:layout_constraintTop_toBottomOf="@id/employee_details_bio"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@color/colorPrimary"
+                app:layout_constraintRight_toRightOf="parent"
+                android:padding="3dp"/>
 
         </android.support.constraint.ConstraintLayout>
 

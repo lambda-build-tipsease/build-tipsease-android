@@ -55,10 +55,17 @@ public class EmployeeDetailsFragment extends Fragment {
         employeeDetailsImage = view.findViewById(R.id.employee_details_image);
         employeeDetailsTagline = view.findViewById(R.id.employee_details_tagline);
         employeeDetailsRatingBar = view.findViewById(R.id.employee_details_rating_bar);
-        employeeDetailsWorkplace = view.findViewById(R.id.employee_details_rating_bar);
+        employeeDetailsWorkplace = view.findViewById(R.id.employee_details_workplace);
         employeeDetailsOccupation = view.findViewById(R.id.employee_details_occupation);
         employeeDetailsBio = view.findViewById(R.id.employee_details_bio);
 
+        employeeDetailsName.setText(employee.getFirstName() + " " + employee.getLastName());
+        employeeDetailsImage.setImageBitmap(CustomerMainActivity.employeeImages.get(employee.getId()));
+        employeeDetailsTagline.setText(employee.getTagline());
+        employeeDetailsRatingBar.setRating((float)employee.getRating());
+        employeeDetailsWorkplace.setText(employee.getWorkplace());
+        employeeDetailsOccupation.setText(employee.getServiceType());
+        employeeDetailsBio.setText(employee.getBio());
 
     }
 }
