@@ -121,6 +121,21 @@ public class UserDAO {
         return employees;
     }
 
+    public static Employee getSpecificEmployee(int id, String token) {
+        String url = BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, id);
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+
+        try {
+            JSONObject employeeJSON = new JSONObject(NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties));
+            return getEmployeeFromJson(employeeJSON);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static Employee getEmployeeFromJson(JSONObject jsonObject) {
         Employee employee = new Employee();
         try {
