@@ -84,18 +84,40 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
 
                         updateEmployeeBio = view.findViewById(R.id.update_employee_bio);
                         updateEmployeeBio.setText(employee.getBio());
+
+                        updateEmployeeButton = view.findViewById(R.id.update_employee_button);
+                        updateEmployeeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                updateEmployee(employee);
+                            }
+                        });
                     }
                 });
             }
         }).start();
 
-        updateEmployeeButton.setOnClickListener(new View.OnClickListener() {
+
+
+    }
+
+    public void updateEmployee(Employee employee) {
+
+        final Employee employee1 = employee;
+        employee1.setFirstName(updateEmployeeFirstName.getText().toString());
+        employee1.setLastName(updateEmployeeLastName.getText().toString());
+        employee1.setWorkplace(updateEmployeeWorkplace.getText().toString());
+        employee1.setServiceType(updateEmployeeOccupation.getText().toString());
+        employee1.setTimeAtJob(updateEmployeeTime.getText().toString());
+        employee1.setTagline(updateEmployeeTagline.getText().toString());
+        employee1.setBio(updateEmployeeBio.getText().toString());
+
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-
+            public void run() {
+                UserDAO.updateEmployee(employee1, id, token);
             }
-        });
-
+        }).start();
     }
 
 
