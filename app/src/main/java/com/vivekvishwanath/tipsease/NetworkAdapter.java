@@ -49,6 +49,7 @@ public class NetworkAdapter {
 
             if (headerProperties != null) {
                 for (Map.Entry<String, String> property : headerProperties.entrySet()) {
+
                     connection.setRequestProperty(property.getKey(), property.getValue());
                 }
             }
@@ -58,7 +59,8 @@ public class NetworkAdapter {
                 // S03M03-11 write body of post request
                 connection.setDoInput(true);
                 final OutputStream outputStream = connection.getOutputStream();
-                outputStream.write(requestBody.toString().getBytes());
+                String data = requestBody.toString();
+                outputStream.write(data.getBytes());
                 outputStream.close();
             } else {
                 connection.connect();

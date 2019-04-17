@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@color/cardview_light_background"
     tools:context=".EmployeeDetailsFragment">
 
     <ScrollView
@@ -24,12 +25,20 @@
                 android:textSize="22sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:id="@+id/employee_details_separator_1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/employee_details_name"/>
+
             <ImageView
                 android:id="@+id/employee_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:src="@drawable/tipsease_logo"
-                app:layout_constraintTop_toBottomOf="@id/employee_details_name" />
+                app:layout_constraintTop_toBottomOf="@id/employee_details_separator_1"
+                android:padding="5dp"/>
 
             <TextView
                 android:id="@+id/employee_details_tagline"
@@ -45,10 +54,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
-                android:stepSize="0.1"
+                android:stepSize="0.01"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_tagline"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
+
+
+            <View
+                android:id="@+id/employee_details_separator_2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/employee_details_rating_bar"/>
 
             <TextView
                 android:id="@+id/employee_details_workplace"
@@ -56,7 +73,8 @@
                 android:layout_height="wrap_content"
                 android:text="Workplace"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/employee_details_rating_bar" />
+                app:layout_constraintTop_toBottomOf="@id/employee_details_separator_2"
+                android:padding="2dp"/>
 
             <TextView
                 android:id="@+id/employee_details_occupation"
@@ -76,6 +94,25 @@
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_occupation"
                 />
+
+
+            <View
+                android:id="@+id/employee_details_separator_3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintTop_toBottomOf="@id/employee_details_bio"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Tip"
+                app:layout_constraintTop_toBottomOf="@id/employee_details_separator_3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:background="@color/colorPrimary"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="5dp"/>
 
         </android.support.constraint.ConstraintLayout>
 
