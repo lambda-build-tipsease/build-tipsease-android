@@ -57,8 +57,12 @@ public class LoginActivity extends AppCompatActivity {
             public void run() {
                 boolean isTokenExpired = UserDAO.isTokenExpired(prefs.getString(Constants.TOKEN_KEY, null));
                 if (!isTokenExpired && prefs.getInt(Constants.ID_KEY, 0) != 0) {
+                    final Intent intent;
                     if (prefs.getString(Constants.TYPE_KEY, null).equals("users")) {
-                        final Intent intent = new Intent(context, CustomerMainActivity.class);
+                        intent = new Intent(context, CustomerMainActivity.class);
+                    } else {
+                        intent = new Intent(context, EmployeeMainActivity.class);
+                    }
                         Bundle extras = new Bundle();
                         extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
                         extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
@@ -71,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                         });
                     }
                 }
-            }
         }).start();
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -124,7 +127,12 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putInt(Constants.ID_KEY, id);
                             editor.putString(Constants.TYPE_KEY, type);
                             editor.commit();
-                            final Intent intent = new Intent(context, CustomerMainActivity.class);
+                            final Intent intent;
+                            if (type.equals("users")) {
+                                intent = new Intent(context, CustomerMainActivity.class);
+                            } else {
+                                intent = new Intent(context, EmployeeMainActivity.class);
+                            }
                             Bundle extras = new Bundle();
                             extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
                             extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
@@ -135,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             });
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
