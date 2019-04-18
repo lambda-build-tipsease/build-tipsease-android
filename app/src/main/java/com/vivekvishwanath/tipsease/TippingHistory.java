@@ -43,6 +43,7 @@ public class TippingHistory extends AppCompatActivity {
          new Thread(new Runnable() {
             @Override
             public void run() {
+                tips.clear();
                 tips = UserDAO.getAllEmployeeTips(LoginActivity.prefs.getInt(Constants.ID_KEY, 0),
                         LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
 
@@ -58,5 +59,7 @@ public class TippingHistory extends AppCompatActivity {
             }
         }).start();
 
+
     }
+
 }
