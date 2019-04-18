@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public class TippingHistory extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private TippingListAdapter tippingListAdapter;
+    private Button employeeHomeButton;
     private Context context;
 
     private ArrayList<TipObject> tips = new ArrayList<>();
@@ -28,6 +31,14 @@ public class TippingHistory extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        employeeHomeButton = findViewById(R.id.employee_home_button);
+        employeeHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
          new Thread(new Runnable() {
             @Override

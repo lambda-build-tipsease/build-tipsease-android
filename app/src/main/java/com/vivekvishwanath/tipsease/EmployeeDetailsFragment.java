@@ -29,6 +29,7 @@ public class EmployeeDetailsFragment extends Fragment {
     private TextView employeeDetailsOccupation;
     private TextView employeeDetailsBio;
     private Button addTipButton;
+    private Button customerHomeButton;
 
 
 
@@ -64,6 +65,20 @@ public class EmployeeDetailsFragment extends Fragment {
         employeeDetailsWorkplace = view.findViewById(R.id.employee_details_workplace);
         employeeDetailsOccupation = view.findViewById(R.id.employee_details_occupation);
         employeeDetailsBio = view.findViewById(R.id.employee_details_bio);
+        customerHomeButton = view.findViewById(R.id.customer_home_button);
+        customerHomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        employeeDetailsRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+            }
+        });
         addTipButton = view.findViewById(R.id.add_tip_button);
 
         addTipButton.setOnClickListener(new View.OnClickListener() {

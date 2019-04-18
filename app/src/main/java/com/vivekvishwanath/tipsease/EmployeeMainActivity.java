@@ -2,6 +2,7 @@ package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +16,7 @@ public class EmployeeMainActivity extends AppCompatActivity {
     private TextView employeeMainPageName;
     private Button editEmployeeDetailsButton;
     private Button viewTipHistoryButton;
-    private Button viewProfileButton;
+    private Button employeeLogoutButton;
     private Context context;
 
     String token;
@@ -68,7 +69,19 @@ public class EmployeeMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        viewProfileButton = findViewById(R.id.view_profile_button);
+
+        employeeLogoutButton = findViewById(R.id.employee_logout_button);
+        employeeLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = LoginActivity.prefs.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
 
     }

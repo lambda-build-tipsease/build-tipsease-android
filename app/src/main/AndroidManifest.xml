@@ -14,7 +14,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TippingHistory"></activity>
         <activity android:name=".EmployeeMainActivity" />
-        <activity android:name=".CustomerMainActivity" />
+        <activity android:name=".CustomerMainActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -2,9 +2,12 @@ package com.vivekvishwanath.tipsease;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +41,7 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
     private EditText updateEmployeeTagline;
     private EditText updateEmployeeBio;
     private Button updateEmployeeButton;
+
 
     private String token;
     private int id;
@@ -86,6 +90,13 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
         updateEmployeeTagline = view.findViewById(R.id.update_employee_tagline);
         updateEmployeeBio = view.findViewById(R.id.update_employee_bio);
         updateEmployeeButton = view.findViewById(R.id.update_employee_button);
+
+        view.findViewById(R.id.edit_employee_home_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         new Thread(new Runnable() {
             @Override
@@ -178,6 +189,16 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
         encImage = encImage.replace("\n", "");
         return encImage;
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
     }
 
 
