@@ -89,7 +89,8 @@ public class AddTipFragment extends DialogFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        UserDAO.addTip(Double.parseDouble(customTip.getText().toString()), employee.getId());
+                        UserDAO.addTip(Double.parseDouble(customTip.getText().toString()), employee.getId(),
+                                LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
                     }
                 }).start();
             }

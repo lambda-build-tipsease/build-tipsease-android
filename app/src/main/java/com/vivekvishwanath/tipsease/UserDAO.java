@@ -19,7 +19,8 @@ public class UserDAO {
     private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/" + "%d";
     private static final String RATE_WORKER_URL = "/serviceWorkers/rate/" + "%d";
     private static final String UPLOAD_IMAGE_URL = "https://api.imgbb.com/1/upload?key=";
-    private static final String TIPPING_URL = "/serviceWorkers/pay/:" + "%d";
+    private static final String TIPPING_URL = "/serviceWorkers/pay/" + "%d";
+    private static final String GET_EMPLOYEE_TIPS_URL = "/tickets/tipHistory/" + "%d";
 
 
     private static HashMap<String, String> headerProperties;
@@ -292,7 +293,7 @@ public class UserDAO {
         return null;
     }
 
-    public static String addTip(double tip, int id) {
+    public static String addTip(double tip, int id, String token) {
         String url = BASE_URL + String.format(TIPPING_URL, id);
         JSONObject paymentJSON = new JSONObject();
         try {
@@ -302,8 +303,33 @@ public class UserDAO {
         }
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
         String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, paymentJSON, headerProperties);
         return result;
+    }
+
+    public static ArrayList<TipObject> getAllEmployeeTips(int id, String token) {
+        String url = BASE_URL + String.format(GET_EMPLOYEE_TIPS_URL, id);
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        ArrayList<TipObject> tipsList = new ArrayList<>();
+        try {
+            JSONArray tipsJSON = new JSONArray(result);
+            for (int i = 0; i < tipsJSON.length(); i++) {
+                JSONObject jsonObject = tipsJSON.getJSONObject(i);
+                TipObject tip = new TipObject();
+                tip.setDateReceived(jsonObject.getString("dateRecieved"));
+                tip.setSenderName(jsonObject.getString("senderUsername"));
+                tip.setTipAmount(jsonObject.getDouble("tipAmount"));
+                tipsList.add(tip);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return tipsList;
     }
 
 
