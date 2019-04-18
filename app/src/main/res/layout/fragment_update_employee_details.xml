@@ -3,7 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateEmployeeDetailsFragment">
+    tools:context=".UpdateEmployeeDetailsFragment"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ic_edit_icon"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,6 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Update"/>
+
+            <Button
+                android:id="@+id/edit_employee_home_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_home_icon"/>
 
         </LinearLayout>
 

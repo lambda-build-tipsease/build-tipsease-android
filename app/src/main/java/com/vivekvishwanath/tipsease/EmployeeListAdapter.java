@@ -55,7 +55,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("employee", employee);
                 fragment.setArguments(bundle);
-                fragmentTransaction.add(R.id.employee_details_fragment_container, fragment).commit();
+                fragmentTransaction.replace(R.id.employee_details_fragment_container, fragment).commit();
             }
         });
     }

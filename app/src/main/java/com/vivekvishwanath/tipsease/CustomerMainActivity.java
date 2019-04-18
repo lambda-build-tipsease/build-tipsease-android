@@ -2,6 +2,7 @@ package com.vivekvishwanath.tipsease;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ public class CustomerMainActivity extends AppCompatActivity {
 
     private Context context;
     private EditText searchEmployeeEditText;
+    private Button customerLogoutButton;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -50,6 +54,20 @@ public class CustomerMainActivity extends AppCompatActivity {
 
         employeeListAdapter = new EmployeeListAdapter(matchedEmployees);
         recyclerView.setAdapter(employeeListAdapter);
+
+        customerLogoutButton = findViewById(R.id.customer_logout_button);
+        customerLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = LoginActivity.prefs.edit();
+                editor.clear();
+                editor.apply();
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+
         searchEmployeeEditText = findViewById(R.id.search_employee_edit_text);
         new Thread(new Runnable() {
             @Override
@@ -76,8 +94,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                 employeeListAdapter.notifyDataSetChanged();
                 if (!s.toString().equals("")) {
                     for (int i = 0; i < allEmployees.size(); i++) {
-                        if (allEmployees.get(i).getFirstName().startsWith(s.toString()) ||
-                                allEmployees.get(i).getLastName().startsWith(s.toString())) {
+                        if (allEmployees.get(i).getFirstName().startsWith(s.toString())) {
                             matchedEmployees.add(allEmployees.get(i));
                             final int employeeId = allEmployees.get(i).getId();
                             final String imageUrl = allEmployees.get(i).getImageUrl();

@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetLoginInfoView;
     private TextView signUpView;
     private Context context;
-    private static SharedPreferences prefs;
+    public static SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
