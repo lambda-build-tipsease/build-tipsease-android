@@ -75,8 +75,16 @@ public class EmployeeDetailsFragment extends Fragment {
 
         employeeDetailsRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-
+            public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
+                if (fromUser) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String ratingResult = UserDAO.rateEmployee(employee.getId(), LoginActivity.prefs.getString(Constants.TOKEN_KEY, null), rating);
+                            int i = 0;
+                        }
+                    }).start();
+                }
             }
         });
         addTipButton = view.findViewById(R.id.add_tip_button);

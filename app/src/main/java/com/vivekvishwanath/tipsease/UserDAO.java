@@ -17,10 +17,10 @@ public class UserDAO {
     private static final String LOGIN_URL = "/auth/users/login";
     private static final String GET_SPECIFIC_CUSTOMER_URL = "/users/" + "%d";
     private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/" + "%d";
-    private static final String RATE_WORKER_URL = "/serviceWorkers/rate/" + "%d";
     private static final String UPLOAD_IMAGE_URL = "https://api.imgbb.com/1/upload?key=";
     private static final String TIPPING_URL = "/serviceWorkers/pay/" + "%d";
     private static final String GET_EMPLOYEE_TIPS_URL = "/tickets/tipHistory/" + "%d";
+    private static final String RATE_EMPLOYEE_URL = "/serviceWorkers/rate/" + "%d";
 
 
     private static HashMap<String, String> headerProperties;
@@ -330,6 +330,23 @@ public class UserDAO {
             e.printStackTrace();
         }
         return tipsList;
+    }
+
+    public static String rateEmployee(int id, String token, float rating) {
+        String url = BASE_URL + String.format(RATE_EMPLOYEE_URL, id);
+        JSONObject ratingJSON = new JSONObject();
+        try {
+            ratingJSON.put("rating", rating);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, ratingJSON, headerProperties);
+        return result;
     }
 
 
