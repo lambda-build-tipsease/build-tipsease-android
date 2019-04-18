@@ -174,12 +174,11 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
         bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+
         encImage = encImage.replace("\n", "");
-
         return encImage;
+
     }
-
-
 
 
 }

@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +19,7 @@ public class UserDAO {
     private static final String GET_SPECIFIC_EMPLOYEE_URL = "/serviceWorkers/" + "%d";
     private static final String RATE_WORKER_URL = "/serviceWorkers/rate/" + "%d";
     private static final String UPLOAD_IMAGE_URL = "https://api.imgbb.com/1/upload?key=";
+    private static final String TIPPING_URL = "/serviceWorkers/pay/:" + "%d";
 
 
     private static HashMap<String, String> headerProperties;
@@ -195,8 +195,10 @@ public class UserDAO {
         }
         try {
             String[] fullName = jsonObject.getString("fullName").split(" ");
-            String lastName = fullName[1];
-            employee.setLastName(lastName);
+            if (fullName.length > 1) {
+                String lastName = fullName[1];
+                employee.setLastName(lastName);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -279,7 +281,7 @@ public class UserDAO {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, jsonObject, null);
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, jsonObject, headerProperties);
         try {
             JSONObject resultJSON = new JSONObject(result);
             String imageUrl = resultJSON.getJSONObject("data").getJSONObject("image").getString("url");
@@ -289,6 +291,21 @@ public class UserDAO {
         }
         return null;
     }
+
+    public static String addTip(double tip, int id) {
+        String url = BASE_URL + String.format(TIPPING_URL, id);
+        JSONObject paymentJSON = new JSONObject();
+        try {
+            paymentJSON.put("payment", tip);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, paymentJSON, headerProperties);
+        return result;
+    }
+
 
 
 }

@@ -76,8 +76,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                 employeeListAdapter.notifyDataSetChanged();
                 if (!s.toString().equals("")) {
                     for (int i = 0; i < allEmployees.size(); i++) {
-                        if (allEmployees.get(i).getFirstName().startsWith(s.toString()) ||
-                                allEmployees.get(i).getLastName().startsWith(s.toString())) {
+                        if (allEmployees.get(i).getFirstName().startsWith(s.toString())) {
                             matchedEmployees.add(allEmployees.get(i));
                             final int employeeId = allEmployees.get(i).getId();
                             final String imageUrl = allEmployees.get(i).getImageUrl();
