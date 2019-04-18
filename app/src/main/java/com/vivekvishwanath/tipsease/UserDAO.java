@@ -21,6 +21,7 @@ public class UserDAO {
     private static final String TIPPING_URL = "/serviceWorkers/pay/" + "%d";
     private static final String GET_EMPLOYEE_TIPS_URL = "/tickets/tipHistory/" + "%d";
     private static final String RATE_EMPLOYEE_URL = "/serviceWorkers/rate/" + "%d";
+    private static final String BANK_TRANSFER_URL = "/serviceWorkers/transferToBank/" + "%id";
 
 
     private static HashMap<String, String> headerProperties;
@@ -349,6 +350,27 @@ public class UserDAO {
         return result;
     }
 
+    public static String transferToBank(int id, String token) {
+        String url = BASE_URL + String.format(BANK_TRANSFER_URL, id);
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+        return NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, null, headerProperties);
+    }
 
-
+    public static double getEmployeeBalance(int id, String token) {
+        String url = BASE_URL + String.format(GET_SPECIFIC_EMPLOYEE_URL, id);
+        headerProperties = new HashMap<>();
+        headerProperties.put("Content-Type", "application/json");
+        headerProperties.put("authorization", token);
+        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            double accountBalance = jsonObject.getDouble("accountBalance");
+            return accountBalance;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
