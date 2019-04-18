@@ -81,7 +81,7 @@ public class TippingHistory extends AppCompatActivity {
                              public void run() {
                                  accountBalanceTextView.setText(Double.toString(accountBalance));
                              }
-                         }); 
+                         });
                      }
                  }).start();
              }
