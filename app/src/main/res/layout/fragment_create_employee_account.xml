@@ -49,6 +49,7 @@
         android:id="@+id/employee_password_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="@string/form_password_hint"
         android:maxLines="1"/>
 
@@ -56,6 +57,7 @@
         android:id="@+id/employee_retype_password_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="@string/form_retype_password_hint"
         android:maxLines="1"/>
 

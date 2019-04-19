@@ -42,6 +42,7 @@
         android:id="@+id/customer_password_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         android:hint="@string/password_hint"
         android:maxLines="1"/>
 
@@ -50,6 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/retype_password_hint"
+        android:inputType="textPassword"
         android:maxLines="1"/>
 
     <Button
