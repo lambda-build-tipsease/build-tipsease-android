@@ -1,5 +1,5 @@
 # TIPSEASE
-This README outlines the processes used to build the Android application for the Tipsease Lambda Build Week project. The application is a tipping service that allows users to instantly tip service workers by searching for their profile. It also allows service workers to upload a few personal details as well as view their tups
+This README outlines the processes used to build the Android application for the Tipsease Lambda Build Week project. The application is a tipping service that allows users to instantly tip service workers by searching for their profile. It also allows service workers to upload a few personal details as well as view their tips
 
 ## API, DAO, and NetworkAdapter
 - All functions and methods related to accessing the API can be found in the UserDAO class. The API stores information related to customers and service workers who have registered with the application
