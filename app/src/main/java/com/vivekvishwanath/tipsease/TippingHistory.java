@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -73,13 +74,20 @@ public class TippingHistory extends AppCompatActivity {
                  new Thread(new Runnable() {
                      @Override
                      public void run() {
-                         String result = UserDAO.transferToBank(employee.getId(), LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
+                         final String result = UserDAO.transferToBank(employee.getId(), LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
                          final double accountBalance = UserDAO.getEmployeeBalance(employee.getId(),
                                  LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
                          runOnUiThread(new Runnable() {
                              @Override
                              public void run() {
-                                 accountBalanceTextView.setText(Double.toString(accountBalance));
+                                 if (result.equals(Constants.RESPONSE_OK) || result.equals(Constants.RESPONSE_CREATED)) {
+                                     accountBalanceTextView.setText("$" + Double.toString(accountBalance));
+                                     Toast.makeText(getApplicationContext(), getString(R.string.balance_transfer_pass_toast),
+                                             Toast.LENGTH_LONG).show();
+                                 } else {
+                                     Toast.makeText(getApplicationContext(), getString(R.string.balance_transfer_fail_toast),
+                                             Toast.LENGTH_LONG).show();
+                                 }
                              }
                          });
                      }

@@ -40,7 +40,7 @@ import java.util.ArrayList;
             TipObject tip = tips.get(position);
             holder.tipSender.setText(tip.getSenderName());
             holder.dateReceived.setText(tip.getDateReceived());
-            holder.receivedTipAmount.setText(Double.toString(tip.getTipAmount()));
+            holder.receivedTipAmount.setText("$" + Double.toString(tip.getTipAmount()));
 
             setEnterAnimation(holder.tipCardView);
         }

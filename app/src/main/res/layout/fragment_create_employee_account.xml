@@ -63,6 +63,7 @@
         android:id="@+id/employee_create_account_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:text="@string/create_employee_account_button_text" />
 
 

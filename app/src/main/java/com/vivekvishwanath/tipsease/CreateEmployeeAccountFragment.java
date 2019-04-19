@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class CreateEmployeeAccountFragment extends DialogFragment {
@@ -66,7 +67,19 @@ public class CreateEmployeeAccountFragment extends DialogFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        UserDAO.registerEmployee(employee);
+                        String result = UserDAO.registerEmployee(employee);
+                        if (result.equals(Constants.RESPONSE_OK) || result.equals(Constants.RESPONSE_CREATED)) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity().getApplicationContext(), R.string.registration_pass_toast,
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getActivity().getApplicationContext(), R.string.registration_fail_toast,
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }
                 }).start();
             }

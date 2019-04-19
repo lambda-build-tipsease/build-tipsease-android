@@ -20,7 +20,7 @@
         android:id="@+id/tip_history_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Recent Tips"
+        android:text="@string/tipping_history_title"
         android:textSize="22sp"
         app:layout_constraintTop_toBottomOf="@id/history_view_button"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -39,17 +39,18 @@
         android:id="@+id/account_balance_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AccountBalance"
-        android:textSize="18sp"
+        android:text="@string/account_balance_text"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/tips_recycler_view"
         app:layout_constraintBottom_toTopOf="@id/employee_home_button"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/transfer_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Transfer to Bank"
+        android:text="@string/transfer_to_bank_button_text"
+        android:textSize="12sp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/tips_recycler_view"
         app:layout_constraintBottom_toTopOf="@id/employee_home_button"

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -118,19 +119,32 @@ public class UpdateEmployeeDetailsFragment extends DialogFragment {
                         updateEmployeeBio.setText(thisEmployee.getBio());
                     }
                 });
-                updateEmployeeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                UserDAO.updateEmployee(updateEmployee(thisEmployee), id, token);
-                            }
-                        }).start();
-                    }
-                });
             }
         }).start();
+
+        updateEmployeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final String result = UserDAO.updateEmployee(updateEmployee(thisEmployee), id, token);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (result.equals(Constants.RESPONSE_CREATED) || result.equals(Constants.RESPONSE_OK)) {
+                                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.update_details_pass_toast),
+                                            Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getActivity().getApplicationContext(), getString(R.string.update_details_fail_toast),
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
 
     }
 

@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,16 +29,10 @@ public class NetworkAdapter {
     public static final String TRACE   = "TRACE";
     public static final int TIMEOUT = 10000;
 
-    static String httpRequest(String urlString) {
-        return httpRequest(urlString, GET, null, null);
-    }
-
-    static String httpRequest(String urlString, String requestMethod) {
-        return httpRequest(urlString, requestMethod, null, null);
-    }
-
-    static String httpRequest(String urlString, String requestMethod, JSONObject requestBody, HashMap<String, String> headerProperties) {
+    static ArrayList<String> httpRequest(String urlString, String requestMethod, JSONObject requestBody, HashMap<String, String> headerProperties) {
+        ArrayList<String> results = new ArrayList<>();
         String             result      = "";
+        results.add(result);
         InputStream inputStream = null;
         HttpsURLConnection connection  = null;
 
@@ -67,6 +62,8 @@ public class NetworkAdapter {
             }
 
             final int responseCode = connection.getResponseCode();
+            results.add(Integer.toString(responseCode));
+
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 inputStream = connection.getInputStream();
                 if (inputStream != null) {
@@ -79,6 +76,7 @@ public class NetworkAdapter {
                         builder.append(line);
                     } while (line != null);
                     result = builder.toString();
+                    results.set(0, result);
                 }
             }
         } catch (MalformedURLException e) {
@@ -98,7 +96,7 @@ public class NetworkAdapter {
                 connection.disconnect();
             }
         }
-        return result;
+        return results;
     }
 
     public static Bitmap getBitmapFromUrl(String stringUrl) {

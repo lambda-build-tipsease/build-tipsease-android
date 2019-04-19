@@ -34,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Firstname Lastname"
                 android:textSize="22sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,6 +48,7 @@
                 android:id="@+id/employee_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:transitionName="employee_image_transition"
                 android:src="@drawable/tipsease_logo"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_separator_1"
                 android:padding="5dp"/>
@@ -58,7 +58,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Tagline"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_image"/>
 
@@ -84,7 +83,6 @@
                 android:id="@+id/employee_details_workplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Workplace"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_separator_2"
                 android:padding="2dp"/>
@@ -93,7 +91,6 @@
                 android:id="@+id/employee_details_occupation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Occupation"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_workplace"
                 android:padding="2dp"
@@ -121,7 +118,7 @@
                 android:id="@+id/add_tip_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add Tip"
+                android:text="@string/add_tip_button_text"
                 app:layout_constraintTop_toBottomOf="@id/employee_details_separator_3"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:background="@color/colorPrimary"

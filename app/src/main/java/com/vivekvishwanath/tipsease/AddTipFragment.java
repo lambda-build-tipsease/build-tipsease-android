@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -89,8 +90,21 @@ public class AddTipFragment extends DialogFragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        UserDAO.addTip(Double.parseDouble(customTip.getText().toString()), employee.getId(),
+                        final String result = UserDAO.addTip(Double.parseDouble(customTip.getText().toString()), employee.getId(),
+                                employee.getUsername(),
                                 LoginActivity.prefs.getString(Constants.TOKEN_KEY, null));
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (result.equals(Constants.RESPONSE_CREATED) || result.equals(Constants.RESPONSE_OK)) {
+                                    Toast.makeText(getActivity().getApplicationContext(),
+                                            getString(R.string.tip_passed_toast), Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getActivity().getApplicationContext(),
+                                            getString(R.string.tip_failed_toast), Toast.LENGTH_LONG);
+                                }
+                            }
+                        });
                     }
                 }).start();
             }
