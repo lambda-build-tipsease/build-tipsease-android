@@ -1,4 +1,4 @@
-# TIPSEASE
+# TIPSEASE - Android
 This README outlines the processes used to build the Android application for the Tipsease Lambda Build Week project. The application is a tipping service that allows users to instantly tip service workers by searching for their profile. It also allows service workers to upload a few personal details as well as view their tips
 
 ## API, DAO, and NetworkAdapter
