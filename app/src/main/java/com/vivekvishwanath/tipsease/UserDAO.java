@@ -226,27 +226,42 @@ public class UserDAO {
             e.printStackTrace();
         }
         try {
-            employee.setServiceType(jsonObject.getString("serviceType"));
+            if (!jsonObject.getString("serviceType").equals("null")) {
+                employee.setServiceType(jsonObject.getString("serviceType"));
+            } else
+                employee.setServiceType("No service added");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            employee.setTimeAtJob(jsonObject.getString("timeAtJob"));
+            if (!jsonObject.getString("timeAtJob").equals("null")) {
+                employee.setTimeAtJob(jsonObject.getString("timeAtJob"));
+            } else
+                employee.setTimeAtJob("No time added");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            employee.setTagline(jsonObject.getString("tagline"));
+            if (!jsonObject.getString("tagline").equals("null")) {
+                employee.setTagline(jsonObject.getString("tagline"));
+            } else
+                employee.setTagline("No tagline added");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            employee.setBio(jsonObject.getString("bio"));
+            if (!jsonObject.getString("bio").equals("null")) {
+                employee.setBio(jsonObject.getString("bio"));
+            } else
+                employee.setBio("No bio added");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            employee.setWorkplace(jsonObject.getString("workplace"));
+            if (!jsonObject.getString("workplace").equals("null")) {
+                employee.setWorkplace(jsonObject.getString("workplace"));
+            } else
+                employee.setWorkplace("No workplace added");
         } catch (JSONException e) {
             e.printStackTrace();
         }
