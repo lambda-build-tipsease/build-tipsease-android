@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/tip_card_view">
+    android:elevation="3dp"
+    app:cardMaxElevation="3dp"
+    app:cardCornerRadius="8dp"
+    android:id="@+id/tip_card_view"
+    android:layout_margin="5dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
