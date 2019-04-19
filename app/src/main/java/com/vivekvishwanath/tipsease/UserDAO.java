@@ -21,7 +21,7 @@ public class UserDAO {
     private static final String TIPPING_URL = "/serviceWorkers/pay/" + "%d";
     private static final String GET_EMPLOYEE_TIPS_URL = "/tickets/tipHistory/" + "%d";
     private static final String RATE_EMPLOYEE_URL = "/serviceWorkers/rate/" + "%d";
-    private static final String BANK_TRANSFER_URL = "/serviceWorkers/transferToBank/" + "%id";
+    private static final String BANK_TRANSFER_URL = "/serviceWorkers/transferToBank/" + "%d";
 
 
     private static HashMap<String, String> headerProperties;
@@ -47,7 +47,8 @@ public class UserDAO {
 
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, loginJSON, headerProperties);
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, loginJSON, headerProperties);
+        String result = results.get(0);
             try {
             JSONObject resultJSON = new JSONObject(result);
             return resultJSON;
@@ -57,7 +58,7 @@ public class UserDAO {
         return null;
     }
 
-    public static void registerEmployee(Employee employee) {
+    public static String registerEmployee(Employee employee) {
         JSONObject newEmployeeJSON = new JSONObject();
         try {
             newEmployeeJSON.put("username", employee.getUsername());
@@ -81,11 +82,12 @@ public class UserDAO {
         }
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        NetworkAdapter.httpRequest(BASE_URL + REGISTER_EMPLOYEE_URL, NetworkAdapter.POST,
+        ArrayList<String> results = NetworkAdapter.httpRequest(BASE_URL + REGISTER_EMPLOYEE_URL, NetworkAdapter.POST,
                 newEmployeeJSON, headerProperties);
+        return results.get(1);
     }
 
-    public static void registerCustomer(Customer customer) {
+    public static String registerCustomer(Customer customer) {
         JSONObject newCustomerJSON = new JSONObject();
         try {
             newCustomerJSON.put("username", customer.getUsername());
@@ -104,7 +106,9 @@ public class UserDAO {
         }
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
-        NetworkAdapter.httpRequest(BASE_URL + REGISTER_CUSTOMER_URL, NetworkAdapter.POST, newCustomerJSON, headerProperties);
+        ArrayList<String> results = NetworkAdapter.httpRequest(BASE_URL + REGISTER_CUSTOMER_URL,
+                NetworkAdapter.POST, newCustomerJSON, headerProperties);
+        return results.get(1);
     }
 
     public static ArrayList<Employee> getAllEmployees(String token) {
@@ -113,8 +117,9 @@ public class UserDAO {
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
         try {
-            JSONArray employeesJSONArray = new JSONArray(NetworkAdapter.httpRequest(BASE_URL + GET_ALL_EMPLOYEES_URL,
-                    NetworkAdapter.GET, null, headerProperties));
+            ArrayList<String> results = NetworkAdapter.httpRequest(BASE_URL + GET_ALL_EMPLOYEES_URL,
+                    NetworkAdapter.GET, null, headerProperties);
+            JSONArray employeesJSONArray = new JSONArray(results.get(0));
             for (int i = 0; i < employeesJSONArray.length(); i++) {
                 JSONObject employeeJSON = employeesJSONArray.getJSONObject(i);
                 employees.add(getEmployeeFromJson(employeeJSON));
@@ -132,7 +137,8 @@ public class UserDAO {
         headerProperties.put("authorization", token);
 
         try {
-            JSONObject employeeJSON = new JSONObject(NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties));
+            ArrayList<String> results =  NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+            JSONObject employeeJSON = new JSONObject(results.get(0));
             return getEmployeeFromJson(employeeJSON);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,8 +188,8 @@ public class UserDAO {
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
 
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, jsonObject, headerProperties);
-        return result;
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, jsonObject, headerProperties);
+        return results.get(1);
     }
 
     public static Employee getEmployeeFromJson(JSONObject jsonObject) {
@@ -206,6 +212,11 @@ public class UserDAO {
         }
         try {
             employee.setId(jsonObject.getInt("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            employee.setUsername(jsonObject.getString("username"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -283,9 +294,9 @@ public class UserDAO {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, jsonObject, headerProperties);
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.POST, jsonObject, headerProperties);
         try {
-            JSONObject resultJSON = new JSONObject(result);
+            JSONObject resultJSON = new JSONObject(results.get(0));
             String imageUrl = resultJSON.getJSONObject("data").getJSONObject("image").getString("url");
             return imageUrl;
         } catch (JSONException e) {
@@ -294,7 +305,7 @@ public class UserDAO {
         return null;
     }
 
-    public static String addTip(double tip, int id, String token) {
+    public static String addTip(double tip, int id, String username, String token) {
         String url = BASE_URL + String.format(TIPPING_URL, id);
         JSONObject paymentJSON = new JSONObject();
         try {
@@ -302,11 +313,16 @@ public class UserDAO {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        try {
+            paymentJSON.put("senderUsername", username);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, paymentJSON, headerProperties);
-        return result;
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, paymentJSON, headerProperties);
+        return results.get(1);
     }
 
     public static ArrayList<TipObject> getAllEmployeeTips(int id, String token) {
@@ -315,7 +331,8 @@ public class UserDAO {
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
 
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        String result = results.get(0);
         ArrayList<TipObject> tipsList = new ArrayList<>();
         try {
             JSONArray tipsJSON = new JSONArray(result);
@@ -346,8 +363,8 @@ public class UserDAO {
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
 
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, ratingJSON, headerProperties);
-        return result;
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, ratingJSON, headerProperties);
+        return results.get(1);
     }
 
     public static String transferToBank(int id, String token) {
@@ -355,7 +372,8 @@ public class UserDAO {
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
-        return NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, null, headerProperties);
+        ArrayList<String> results =  NetworkAdapter.httpRequest(url, NetworkAdapter.PUT, null, headerProperties);
+        return results.get(1);
     }
 
     public static double getEmployeeBalance(int id, String token) {
@@ -363,7 +381,8 @@ public class UserDAO {
         headerProperties = new HashMap<>();
         headerProperties.put("Content-Type", "application/json");
         headerProperties.put("authorization", token);
-        String result = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        ArrayList<String> results = NetworkAdapter.httpRequest(url, NetworkAdapter.GET, null, headerProperties);
+        String result = results.get(0);
         try {
             JSONObject jsonObject = new JSONObject(result);
             double accountBalance = jsonObject.getDouble("accountBalance");

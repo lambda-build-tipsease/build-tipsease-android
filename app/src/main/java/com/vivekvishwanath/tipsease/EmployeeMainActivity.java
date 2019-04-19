@@ -52,7 +52,6 @@ public class EmployeeMainActivity extends AppCompatActivity {
         editEmployeeDetailsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 UpdateEmployeeDetailsFragment frag = UpdateEmployeeDetailsFragment.newInstance();
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.TOKEN_KEY, token);

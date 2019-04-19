@@ -1,6 +1,7 @@
 package com.vivekvishwanath.tipsease;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
 
     ArrayList<Employee> matchedEmployees;
     Context context;
+    private int lastPosition = -1;
 
     public EmployeeListAdapter(ArrayList<Employee> matchedEmployees) {
         this.matchedEmployees = matchedEmployees;
@@ -39,7 +42,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EmployeeListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final EmployeeListAdapter.ViewHolder holder, int position) {
         final Employee employee = matchedEmployees.get(position);
         holder.employeeFirstName.setText(employee.getFirstName());
         holder.employeeLastName.setText(employee.getLastName());
@@ -54,19 +57,31 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.addToBackStack(null);
                 EmployeeDetailsFragment fragment = EmployeeDetailsFragment.newInstance();
+
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("employee", employee);
+                Bundle empBundle = new Bundle();
+                Bundle options = ActivityOptions.makeSceneTransitionAnimation(
+                        (Activity)v.getContext(),
+                        holder.employeeImageView,
+                        ViewCompat.getTransitionName(holder.employeeImageView)
+                ).toBundle();
+                empBundle.putSerializable("employee", employee);
+                bundle.putBundle("empBundle", empBundle);
+                bundle.putBundle("animationBundle", options);
+
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.employee_details_fragment_container, fragment).commit();
             }
         });
 
-        setEnterAnimation(holder.searchedEmployeeCardView);
+        setEnterAnimation(holder.searchedEmployeeCardView, position);
     }
 
-    private void setEnterAnimation(View viewToAnimate) {
+    private void setEnterAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
+            }
         }
 
     @Override

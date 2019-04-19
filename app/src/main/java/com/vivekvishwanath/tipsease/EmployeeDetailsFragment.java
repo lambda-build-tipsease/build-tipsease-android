@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -50,7 +51,8 @@ public class EmployeeDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Bundle bundle = getArguments();
-        employee = (Employee) bundle.getSerializable("employee");
+        Bundle empBundle = bundle.getBundle("empBundle");
+        employee = (Employee) empBundle.getSerializable("employee");
         return inflater.inflate(R.layout.employee_details_fragment, container, false);
     }
 
@@ -80,8 +82,17 @@ public class EmployeeDetailsFragment extends Fragment {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String ratingResult = UserDAO.rateEmployee(employee.getId(), LoginActivity.prefs.getString(Constants.TOKEN_KEY, null), rating);
-                            int i = 0;
+                            String ratingResult = UserDAO.rateEmployee(employee.getId(),
+                                    LoginActivity.prefs.getString(Constants.TOKEN_KEY, null), rating);
+                            if (ratingResult.equals(Constants.RESPONSE_OK) || ratingResult.equals(Constants.RESPONSE_CREATED)) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity().getApplicationContext(),
+                                                getString(R.string.rating_pass_toast), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
                     }).start();
                 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 
 public class SignUpChoiceFragment extends DialogFragment {
@@ -69,6 +70,8 @@ public class SignUpChoiceFragment extends DialogFragment {
                     fragmentTransaction.addToBackStack(null);
                     CreateEmployeeAccountFragment frag = CreateEmployeeAccountFragment.newInstance();
                     frag.show(fragmentTransaction, Constants.CREATE_EMPLOYEE_FRAGMENT_TAG);
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.select_account_type_text, Toast.LENGTH_LONG).show();
                 }
             }
         });

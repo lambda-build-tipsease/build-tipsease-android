@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                     type = "serviceWorkers";
                     authenticateLoginAttempt(username, password, type);
                 } else {
-                    type = "";
+                    Toast.makeText(context, getString(R.string.choose_login_type_toast), Toast.LENGTH_LONG);
                 }
             }
         });
@@ -149,6 +150,14 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+                else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, getString(R.string.login_fail_toast), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         }).start();
