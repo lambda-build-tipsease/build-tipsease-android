@@ -48,7 +48,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         holder.employeeLastName.setText(employee.getLastName());
         holder.employeeWorkplace.setText(employee.getWorkplace());
         holder.employeeOccupation.setText(employee.getServiceType());
-        holder.employeeImageView.setImageBitmap(CustomerMainActivity.employeeImages.get(employee.getId()));
+        holder.employeeImageView.setImageBitmap(CustomerNavigation.employeeImages.get(employee.getId()));
 
         holder.searchedEmployeeCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +81,7 @@ public class EmployeeListAdapter extends RecyclerView.Adapter<EmployeeListAdapte
         if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
+            lastPosition = position;
             }
         }
 

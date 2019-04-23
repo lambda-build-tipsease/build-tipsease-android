@@ -61,14 +61,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (!isTokenExpired && prefs.getInt(Constants.ID_KEY, 0) != 0) {
                     final Intent intent;
                     if (prefs.getString(Constants.TYPE_KEY, null).equals("users")) {
-                        intent = new Intent(context, CustomerMainActivity.class);
+                        intent = new Intent(context, CustomerNavigation.class);
                     } else {
                         intent = new Intent(context, EmployeeMainActivity.class);
                     }
-                        Bundle extras = new Bundle();
-                        extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
-                        extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
-                        intent.putExtras(extras);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -131,14 +127,10 @@ public class LoginActivity extends AppCompatActivity {
                             editor.commit();
                             final Intent intent;
                             if (type.equals("users")) {
-                                intent = new Intent(context, CustomerMainActivity.class);
+                                intent = new Intent(context, CustomerNavigation.class);
                             } else {
                                 intent = new Intent(context, EmployeeMainActivity.class);
                             }
-                            Bundle extras = new Bundle();
-                            extras.putString(Constants.TOKEN_KEY, prefs.getString(Constants.TOKEN_KEY, null));
-                            extras.putInt(Constants.ID_KEY, prefs.getInt(Constants.ID_KEY, 0));
-                            intent.putExtras(extras);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

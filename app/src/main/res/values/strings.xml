@@ -58,5 +58,12 @@
     <string name="balance_transfer_fail_toast">Couldn\'t Transfer Balance</string>
     <string name="update_details_pass_toast">Details Updated!</string>
     <string name="update_details_fail_toast">Details Couldn\'t be Updated</string>
+    <string name="title_activity_customer_navigation">CustomerNavigation</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

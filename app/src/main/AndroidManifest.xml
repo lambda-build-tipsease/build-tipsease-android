@@ -12,11 +12,12 @@
         android:roundIcon="@drawable/tipsease_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TippingHistory"></activity>
+        <activity
+            android:name=".CustomerNavigation"
+            android:label="@string/title_activity_customer_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".TippingHistory" />
         <activity android:name=".EmployeeMainActivity" />
-        <activity android:name=".CustomerMainActivity"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
