@@ -115,7 +115,7 @@ public class EmployeeDetailsFragment extends Fragment {
         });
 
         employeeDetailsName.setText(employee.getFirstName() + " " + employee.getLastName());
-        employeeDetailsImage.setImageBitmap(CustomerMainActivity.employeeImages.get(employee.getId()));
+        employeeDetailsImage.setImageBitmap(CustomerNavigation.employeeImages.get(employee.getId()));
         employeeDetailsTagline.setText(employee.getTagline());
         employeeDetailsRatingBar.setRating((float)employee.getRating());
         employeeDetailsWorkplace.setText(employee.getWorkplace());

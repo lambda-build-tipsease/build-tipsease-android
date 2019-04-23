@@ -27,10 +27,8 @@ public class EmployeeMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_main);
         context = this;
-
-        Bundle extras = getIntent().getExtras();
-        token = extras.getString(Constants.TOKEN_KEY);
-        id = extras.getInt(Constants.ID_KEY);
+        token = LoginActivity.prefs.getString(Constants.TOKEN_KEY, null);
+        id = LoginActivity.prefs.getInt(Constants.ID_KEY, 0);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
